@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { Button } from '@/components/ui/button'
+
 const hiraganaData = [
     { character: 'あ', romanji: 'a' },
     { character: 'い', romanji: 'i' },
@@ -124,35 +126,24 @@ export default function App() {
     }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100">
+        <div className="fixed inset-0 flex items-center justify-center">
             <div className="flex flex-col items-center justify-center gap-12 p-8">
                 {/* Character Display */}
                 <div className="text-center">
-                    <div className="mb-4 text-9xl font-bold text-gray-800">{currentCharacter.character}</div>
+                    <div className="mb-4 text-9xl text-gray-800">{currentCharacter.character}</div>
                     {showCorrectAnswer && <div className="animate-fade-in text-3xl font-semibold text-green-600">{currentCharacter.romanji}</div>}
                 </div>
-
                 {/* Options */}
                 {!showCorrectAnswer ? (
                     <div className="flex gap-4">
                         {options.map((option) => (
-                            <button
-                                key={option}
-                                onClick={() => handleOptionClick(option)}
-                                disabled={selectedAnswer !== null}
-                                className={`${getButtonClass(option)} min-w-32 transform rounded-lg px-8 py-4 text-2xl font-semibold shadow-lg transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed`}
-                            >
+                            <Button key={option} disabled={selectedAnswer !== null} onClick={() => handleOptionClick(option)}>
                                 {option}
-                            </button>
+                            </Button>
                         ))}
                     </div>
                 ) : (
-                    <button
-                        onClick={nextCharacter}
-                        className="transform rounded-lg bg-blue-500 px-12 py-4 text-2xl font-semibold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:bg-blue-600"
-                    >
-                        Next
-                    </button>
+                    <button onClick={nextCharacter}>Next</button>
                 )}
             </div>
         </div>

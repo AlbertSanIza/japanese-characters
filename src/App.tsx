@@ -33,7 +33,7 @@ function shuffleArray<T>(array: T[]): T[] {
 export default function App() {
     const [currentCharacter, setCurrentCharacter] = useState(getRandomCharacter())
     const [options, setOptions] = useState<string[]>([])
-    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
+
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
 
     useEffect(() => {
@@ -44,10 +44,6 @@ export default function App() {
     }, [currentCharacter])
 
     const handleOptionClick = (option: string) => {
-        if (selectedAnswer) return // Prevent clicking after selection
-
-        setSelectedAnswer(option)
-
         if (option === currentCharacter.romanji) {
             nextCharacter()
         } else {
@@ -58,7 +54,6 @@ export default function App() {
 
     const nextCharacter = () => {
         setCurrentCharacter(getRandomCharacter())
-        setSelectedAnswer(null)
         setShowCorrectAnswer(false)
     }
 
@@ -76,7 +71,6 @@ export default function App() {
                             variant="outline"
                             className="rounded-3xl sm:h-26 sm:px-12 sm:text-6xl"
                             key={option}
-                            disabled={selectedAnswer !== null}
                             onClick={() => handleOptionClick(option)}
                         >
                             {option}

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { hiragana } from '@/data'
-import { cn } from '@/lib/utils'
 
 function getRandomCharacter() {
     return hiragana[Math.floor(Math.random() * hiragana.length)]
@@ -50,10 +49,7 @@ export default function App() {
         setSelectedAnswer(option)
 
         if (option === currentCharacter.romanji) {
-            // Correct answer - move to next character after a brief delay
-            setTimeout(() => {
-                nextCharacter()
-            }, 500)
+            nextCharacter()
         } else {
             // Wrong answer - show correct answer
             setShowCorrectAnswer(true)
@@ -67,28 +63,21 @@ export default function App() {
     }
 
     return (
-        <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
-            <div className="flex flex-1 flex-col gap-6 bg-orange-50 text-center">
-                <div className="text-[40vh]">{currentCharacter.character}</div>
-                {showCorrectAnswer && <div className="animate-fade-in text-3xl font-semibold text-green-600">{currentCharacter.romanji}</div>}
+        <div className="fixed inset-0 flex flex-col items-center justify-center gap-12 p-12">
+            <div className="flex flex-1 flex-col gap-6 text-center">
+                <div className="flex-1 bg-amber-100 text-[30vh] leading-[32vh]">{currentCharacter.character}</div>
+                <div className="text-6xl font-semibold">{currentCharacter.romanji}</div>
             </div>
             {!showCorrectAnswer ? (
                 <div className="flex gap-6">
                     {options.map((option) => (
-                        <Button
-                            size="lg"
-                            variant="outline"
-                            key={option}
-                            className={cn('h-20 text-3xl')}
-                            disabled={selectedAnswer !== null}
-                            onClick={() => handleOptionClick(option)}
-                        >
+                        <Button size="xl" variant="outline" key={option} disabled={selectedAnswer !== null} onClick={() => handleOptionClick(option)}>
                             {option}
                         </Button>
                     ))}
                 </div>
             ) : (
-                <Button size="lg" variant="outline" className="h-20 text-3xl" onClick={nextCharacter}>
+                <Button size="xl" variant="ghost" onClick={nextCharacter}>
                     Next
                 </Button>
             )}

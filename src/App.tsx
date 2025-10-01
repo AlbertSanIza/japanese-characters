@@ -1,63 +1,15 @@
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
-
-const hiraganaData = [
-    { character: 'あ', romanji: 'a' },
-    { character: 'い', romanji: 'i' },
-    { character: 'う', romanji: 'u' },
-    { character: 'え', romanji: 'e' },
-    { character: 'お', romanji: 'o' },
-    { character: 'か', romanji: 'ka' },
-    { character: 'き', romanji: 'ki' },
-    { character: 'く', romanji: 'ku' },
-    { character: 'け', romanji: 'ke' },
-    { character: 'こ', romanji: 'ko' },
-    { character: 'さ', romanji: 'sa' },
-    { character: 'し', romanji: 'shi' },
-    { character: 'す', romanji: 'su' },
-    { character: 'せ', romanji: 'se' },
-    { character: 'そ', romanji: 'so' },
-    { character: 'た', romanji: 'ta' },
-    { character: 'ち', romanji: 'chi' },
-    { character: 'つ', romanji: 'tsu' },
-    { character: 'て', romanji: 'te' },
-    { character: 'と', romanji: 'to' },
-    { character: 'な', romanji: 'na' },
-    { character: 'に', romanji: 'ni' },
-    { character: 'ぬ', romanji: 'nu' },
-    { character: 'ね', romanji: 'ne' },
-    { character: 'の', romanji: 'no' },
-    { character: 'は', romanji: 'ha' },
-    { character: 'ひ', romanji: 'hi' },
-    { character: 'ふ', romanji: 'fu' },
-    { character: 'へ', romanji: 'he' },
-    { character: 'ほ', romanji: 'ho' },
-    { character: 'ま', romanji: 'ma' },
-    { character: 'み', romanji: 'mi' },
-    { character: 'む', romanji: 'mu' },
-    { character: 'め', romanji: 'me' },
-    { character: 'も', romanji: 'mo' },
-    { character: 'や', romanji: 'ya' },
-    { character: 'ゆ', romanji: 'yu' },
-    { character: 'よ', romanji: 'yo' },
-    { character: 'ら', romanji: 'ra' },
-    { character: 'り', romanji: 'ri' },
-    { character: 'る', romanji: 'ru' },
-    { character: 'れ', romanji: 're' },
-    { character: 'ろ', romanji: 'ro' },
-    { character: 'わ', romanji: 'wa' },
-    { character: 'を', romanji: 'wo' },
-    { character: 'ん', romanji: 'n' }
-]
+import { hiragana } from '@/data'
 
 function getRandomCharacter() {
-    return hiraganaData[Math.floor(Math.random() * hiraganaData.length)]
+    return hiragana[Math.floor(Math.random() * hiragana.length)]
 }
 
 function getWrongOptions(correctRomanji: string, count: number): string[] {
     const wrongOptions: string[] = []
-    const allRomanji = hiraganaData.map((h) => h.romanji).filter((r) => r !== correctRomanji)
+    const allRomanji = hiragana.map((h) => h.romanji).filter((r) => r !== correctRomanji)
 
     while (wrongOptions.length < count) {
         const randomOption = allRomanji[Math.floor(Math.random() * allRomanji.length)]
@@ -113,18 +65,6 @@ export default function App() {
         setShowCorrectAnswer(false)
     }
 
-    const getButtonClass = (option: string) => {
-        if (!selectedAnswer) {
-            return 'bg-blue-500 hover:bg-blue-600 text-white'
-        }
-
-        if (option === currentCharacter.romanji) {
-            return 'bg-green-500 text-white'
-        }
-
-        return 'bg-red-500 text-white'
-    }
-
     return (
         <div className="fixed inset-0 flex items-center justify-center">
             <div className="flex flex-col items-center justify-center gap-12 p-8">
@@ -137,13 +77,13 @@ export default function App() {
                 {!showCorrectAnswer ? (
                     <div className="flex gap-4">
                         {options.map((option) => (
-                            <Button key={option} disabled={selectedAnswer !== null} onClick={() => handleOptionClick(option)}>
+                            <Button size="lg" key={option} disabled={selectedAnswer !== null} onClick={() => handleOptionClick(option)}>
                                 {option}
                             </Button>
                         ))}
                     </div>
                 ) : (
-                    <button onClick={nextCharacter}>Next</button>
+                    <Button onClick={nextCharacter}>Next</Button>
                 )}
             </div>
         </div>

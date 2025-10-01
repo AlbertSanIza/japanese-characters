@@ -1,4 +1,6 @@
 {
     "cSpell.language": "en",
+    "git.autofetch": true,
+    "git.confirmSync": false,
     "workbench.iconTheme": "material-icon-theme"
 }

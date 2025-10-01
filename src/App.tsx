@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { hiragana } from '@/data/hiragana'
+import { cn } from '@/lib/utils'
 
 function getRandomCharacter() {
     return hiragana[Math.floor(Math.random() * hiragana.length)]
@@ -31,10 +32,9 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export default function App() {
-    const [currentCharacter, setCurrentCharacter] = useState(getRandomCharacter())
+    const [wasCorrect, setWasCorrect] = useState(true)
     const [options, setOptions] = useState<string[]>([])
-
-    const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
+    const [currentCharacter, setCurrentCharacter] = useState(getRandomCharacter())
 
     useEffect(() => {
         const wrongOptions = getWrongOptions(currentCharacter.romanji, 2)
@@ -45,13 +45,13 @@ export default function App() {
         if (option === currentCharacter.romanji) {
             nextCharacter()
         } else {
-            setShowCorrectAnswer(true)
+            setWasCorrect(false)
         }
     }
 
     const nextCharacter = () => {
         setCurrentCharacter(getRandomCharacter())
-        setShowCorrectAnswer(false)
+        setWasCorrect(true)
     }
 
     return (
@@ -59,8 +59,8 @@ export default function App() {
             <div className="flex flex-1 items-center">
                 <span className="text-[40vh] leading-[40vh]">{currentCharacter.character}</span>
             </div>
-            <div className="text-6xl font-bold">{currentCharacter.romanji}</div>
-            {!showCorrectAnswer ? (
+            <div className={cn('text-9xl font-bold opacity-0', !wasCorrect && 'opacity-100')}>{currentCharacter.romanji}</div>
+            {wasCorrect ? (
                 <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
                     {options.map((option) => (
                         <Button

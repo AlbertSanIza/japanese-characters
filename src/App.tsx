@@ -37,17 +37,14 @@ export default function App() {
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
 
     useEffect(() => {
-        // Generate 3 options: 1 correct and 2 wrong
         const wrongOptions = getWrongOptions(currentCharacter.romanji, 2)
-        const allOptions = shuffleArray([currentCharacter.romanji, ...wrongOptions])
-        setOptions(allOptions)
+        setOptions(shuffleArray([currentCharacter.romanji, ...wrongOptions]))
     }, [currentCharacter])
 
     const handleOptionClick = (option: string) => {
         if (option === currentCharacter.romanji) {
             nextCharacter()
         } else {
-            // Wrong answer - show correct answer
             setShowCorrectAnswer(true)
         }
     }

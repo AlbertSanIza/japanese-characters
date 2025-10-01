@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { hiragana } from '@/data'
+import { cn } from '@/lib/utils'
 
 function getRandomCharacter() {
     return hiragana[Math.floor(Math.random() * hiragana.length)]
@@ -66,26 +67,29 @@ export default function App() {
     }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <div className="flex flex-col items-center justify-center gap-12 p-8">
-                {/* Character Display */}
-                <div className="text-center">
-                    <div className="mb-4 text-9xl text-gray-800">{currentCharacter.character}</div>
-                    {showCorrectAnswer && <div className="animate-fade-in text-3xl font-semibold text-green-600">{currentCharacter.romanji}</div>}
-                </div>
-                {/* Options */}
-                {!showCorrectAnswer ? (
-                    <div className="flex gap-4">
-                        {options.map((option) => (
-                            <Button size="lg" key={option} disabled={selectedAnswer !== null} onClick={() => handleOptionClick(option)}>
-                                {option}
-                            </Button>
-                        ))}
-                    </div>
-                ) : (
-                    <Button onClick={nextCharacter}>Next</Button>
-                )}
+        <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
+            <div className="flex gap-6 text-center">
+                <div className="text-[40vh]">{currentCharacter.character}</div>
+                {showCorrectAnswer && <div className="animate-fade-in text-3xl font-semibold text-green-600">{currentCharacter.romanji}</div>}
             </div>
+            {!showCorrectAnswer ? (
+                <div className="flex gap-6">
+                    {options.map((option) => (
+                        <Button
+                            size="lg"
+                            variant="outline"
+                            key={option}
+                            className={cn('h-20 text-3xl')}
+                            disabled={selectedAnswer !== null}
+                            onClick={() => handleOptionClick(option)}
+                        >
+                            {option}
+                        </Button>
+                    ))}
+                </div>
+            ) : (
+                <Button onClick={nextCharacter}>Next</Button>
+            )}
         </div>
     )
 }

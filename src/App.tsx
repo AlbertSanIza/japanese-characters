@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { hiragana } from '@/data'
+import { hiragana } from '@/data/hiragana'
 
 function getRandomCharacter() {
     return hiragana[Math.floor(Math.random() * hiragana.length)]

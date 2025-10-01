@@ -44,9 +44,9 @@ export default function App() {
     const handleOptionClick = (option: string) => {
         if (option === currentCharacter.romanji) {
             nextCharacter()
-        } else {
-            setWasCorrect(false)
+            return
         }
+        setWasCorrect(false)
     }
 
     const nextCharacter = () => {
@@ -59,7 +59,7 @@ export default function App() {
             <div className="flex flex-1 items-center">
                 <span className="text-[40vh] leading-[40vh]">{currentCharacter.character}</span>
             </div>
-            <div className={cn('text-9xl font-bold opacity-0', !wasCorrect && 'opacity-100')}>{currentCharacter.romanji}</div>
+            <div className={cn('text-9xl font-bold text-green-800 opacity-0', !wasCorrect && 'opacity-100')}>{currentCharacter.romanji}</div>
             {wasCorrect ? (
                 <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
                     {options.map((option) => (

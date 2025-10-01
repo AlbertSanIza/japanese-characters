@@ -68,7 +68,7 @@ export default function App() {
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
-            <div className="flex gap-6 text-center">
+            <div className="flex flex-1 flex-col gap-6 bg-orange-50 text-center">
                 <div className="text-[40vh]">{currentCharacter.character}</div>
                 {showCorrectAnswer && <div className="animate-fade-in text-3xl font-semibold text-green-600">{currentCharacter.romanji}</div>}
             </div>
@@ -88,7 +88,9 @@ export default function App() {
                     ))}
                 </div>
             ) : (
-                <Button onClick={nextCharacter}>Next</Button>
+                <Button size="lg" variant="outline" className="h-20 text-3xl" onClick={nextCharacter}>
+                    Next
+                </Button>
             )}
         </div>
     )

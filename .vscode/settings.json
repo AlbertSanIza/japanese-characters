@@ -11,6 +11,9 @@
     "editor.quickSuggestions": {
         "strings": "on"
     },
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
     "files.insertFinalNewline": true,
     "files.readonlyInclude": {
         "**/bun.lock": true
@@ -20,5 +23,6 @@
     },
     "git.autofetch": true,
     "git.confirmSync": false,
+    "tailwindCSS.classFunctions": ["clsx", "cn", "cva", "twMerge", "tw", "clsx", "tw\\.[a-z-]+"],
     "workbench.iconTheme": "material-icon-theme"
 }

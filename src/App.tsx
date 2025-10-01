@@ -62,7 +62,7 @@ export default function App() {
             <div className="flex flex-1 items-center">
                 <span className="text-[40vh] leading-[40vh]">{currentCharacter.character}</span>
             </div>
-            <div className="text-6xl font-semibold">{currentCharacter.romanji}</div>
+            <div className="text-6xl font-bold">{currentCharacter.romanji}</div>
             {!showCorrectAnswer ? (
                 <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
                     {options.map((option) => (

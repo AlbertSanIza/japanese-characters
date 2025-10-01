@@ -63,21 +63,28 @@ export default function App() {
     }
 
     return (
-        <div className="fixed inset-0 flex flex-col items-center justify-center gap-12 p-12">
-            <div className="flex flex-1 flex-col gap-6 text-center">
-                <div className="flex-1 bg-amber-100 text-[30vh] leading-[32vh]">{currentCharacter.character}</div>
-                <div className="text-6xl font-semibold">{currentCharacter.romanji}</div>
+        <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-6">
+            <div className="flex flex-1 items-center">
+                <span className="text-[40vh] leading-[40vh]">{currentCharacter.character}</span>
             </div>
+            <div className="text-6xl font-semibold">{currentCharacter.romanji}</div>
             {!showCorrectAnswer ? (
-                <div className="flex gap-6">
+                <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
                     {options.map((option) => (
-                        <Button size="xl" variant="outline" key={option} disabled={selectedAnswer !== null} onClick={() => handleOptionClick(option)}>
+                        <Button
+                            size="lg"
+                            variant="outline"
+                            className="rounded-3xl sm:h-26 sm:px-12 sm:text-6xl"
+                            key={option}
+                            disabled={selectedAnswer !== null}
+                            onClick={() => handleOptionClick(option)}
+                        >
                             {option}
                         </Button>
                     ))}
                 </div>
             ) : (
-                <Button size="xl" variant="ghost" onClick={nextCharacter}>
+                <Button variant="outline" className="h-26 rounded-3xl px-12 text-6xl" onClick={nextCharacter}>
                     Next
                 </Button>
             )}

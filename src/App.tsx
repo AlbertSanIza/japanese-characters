@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { hiragana } from '@/data/hiragana'
-import { cn } from '@/lib/utils'
 
 function getRandomCharacter() {
     return hiragana[Math.floor(Math.random() * hiragana.length)]
@@ -37,8 +36,7 @@ export default function App() {
     const [currentCharacter, setCurrentCharacter] = useState(getRandomCharacter())
 
     useEffect(() => {
-        const wrongOptions = getWrongOptions(currentCharacter.romanji, 2)
-        setOptions(shuffleArray([currentCharacter.romanji, ...wrongOptions]))
+        setOptions(shuffleArray([currentCharacter.romanji, ...getWrongOptions(currentCharacter.romanji, 2)]))
     }, [currentCharacter])
 
     const handleOptionClick = (option: string) => {
@@ -55,30 +53,24 @@ export default function App() {
     }
 
     return (
-        <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-6">
+        <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
             <div className="flex flex-1 items-center">
                 <span className="text-[40vh] leading-[40vh]">{currentCharacter.character}</span>
             </div>
-            <div className={cn('text-9xl font-bold text-green-800 opacity-0', !wasCorrect && 'opacity-100')}>{currentCharacter.romanji}</div>
-            {wasCorrect ? (
-                <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
-                    {options.map((option) => (
-                        <Button
-                            size="lg"
-                            variant="outline"
-                            className="rounded-3xl sm:h-26 sm:px-12 sm:text-6xl"
-                            key={option}
-                            onClick={() => handleOptionClick(option)}
-                        >
-                            {option}
-                        </Button>
-                    ))}
-                </div>
-            ) : (
-                <Button variant="outline" className="h-26 rounded-3xl px-12 text-6xl" onClick={nextCharacter}>
-                    Next
-                </Button>
-            )}
+            <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
+                {options.map((option) => (
+                    <Button
+                        size="lg"
+                        variant="outline"
+                        className="rounded-3xl sm:h-26 sm:px-12 sm:text-6xl"
+                        key={option}
+                        onClick={() => handleOptionClick(option)}
+                        disabled={!wasCorrect && option !== currentCharacter.romanji}
+                    >
+                        {option}
+                    </Button>
+                ))}
+            </div>
         </div>
     )
 }

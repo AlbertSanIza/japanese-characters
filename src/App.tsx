@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { hiragana } from '@/data/hiragana'
+import { cn } from '@/lib/utils'
 
 function getRandomCharacter() {
     return hiragana[Math.floor(Math.random() * hiragana.length)]
@@ -54,15 +55,17 @@ export default function App() {
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
-            <div className="flex flex-1 items-center">
-                <span className="text-[40vh] leading-[40vh]">{currentCharacter.character}</span>
-            </div>
+            <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{currentCharacter.character}</div>
             <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
                 {options.map((option) => (
                     <Button
                         size="lg"
-                        variant="outline"
-                        className="rounded-3xl sm:h-26 sm:px-12 sm:text-6xl"
+                        variant={!wasCorrect && option !== currentCharacter.romanji ? 'destructive' : 'outline'}
+                        className={cn(
+                            'rounded-3xl sm:h-26 sm:px-12 sm:text-6xl',
+                            !wasCorrect && option !== currentCharacter.romanji && 'opacity-10!',
+                            !wasCorrect && option === currentCharacter.romanji && 'border-green-600 bg-green-100'
+                        )}
                         key={option}
                         onClick={() => handleOptionClick(option)}
                         disabled={!wasCorrect && option !== currentCharacter.romanji}

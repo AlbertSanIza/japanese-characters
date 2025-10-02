@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { hiragana } from '@/data/hiragana'
-import { katakana } from '@/data/katakana'
+import { hiragana, katakana } from '@/data'
 import { cn } from '@/lib/utils'
 
 type CharacterSet = typeof hiragana | typeof katakana

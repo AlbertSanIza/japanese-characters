@@ -65,7 +65,7 @@ export default function App() {
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
-            <Progress value={progress} />
+            <Progress className="[&>div]:bg-[#BE0028]" value={progress} />
             <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{currentCharacter.character}</div>
             <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">
                 {options.map((option) => (

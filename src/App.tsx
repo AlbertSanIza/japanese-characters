@@ -67,13 +67,13 @@ export default function App() {
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
             <Progress value={progress} />
             <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{currentCharacter.character}</div>
-            <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
+            <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">
                 {options.map((option) => (
                     <Button
                         size="lg"
                         variant={!wasCorrect && option !== currentCharacter.romanji ? 'destructive' : 'outline'}
                         className={cn(
-                            'rounded-3xl sm:h-26 sm:px-12 sm:text-6xl',
+                            'rounded-3xl md:h-26 md:px-10 md:text-6xl',
                             !wasCorrect && option !== currentCharacter.romanji && 'opacity-10!',
                             !wasCorrect && option === currentCharacter.romanji && 'border-green-600 bg-green-100'
                         )}

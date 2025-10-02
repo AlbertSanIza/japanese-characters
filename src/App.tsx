@@ -103,7 +103,7 @@ export default function App() {
                         className={cn(
                             'rounded-3xl md:h-26 md:px-10 md:text-6xl',
                             !wasCorrect && option !== currentCharacter.romanji && 'opacity-10!',
-                            !wasCorrect && option === currentCharacter.romanji && 'border-green-600 bg-green-100'
+                            !wasCorrect && option === currentCharacter.romanji && 'border-green-600 bg-green-100 hover:bg-green-50'
                         )}
                         key={option}
                         onClick={() => handleOptionClick(option)}

@@ -10,15 +10,13 @@ type CharacterSet = typeof hiragana | typeof katakana
 
 function getWrongOptions(correctRomanji: string, count: number, characterSet: CharacterSet): string[] {
     const wrongOptions: string[] = []
-    const allRomanji = characterSet.map((h) => h.romanji).filter((r) => r !== correctRomanji)
-
+    const filteredRomanji = characterSet.map((h) => h.romanji).filter((r) => r !== correctRomanji)
     while (wrongOptions.length < count) {
-        const randomOption = allRomanji[Math.floor(Math.random() * allRomanji.length)]
+        const randomOption = filteredRomanji[Math.floor(Math.random() * filteredRomanji.length)]
         if (!wrongOptions.includes(randomOption)) {
             wrongOptions.push(randomOption)
         }
     }
-
     return wrongOptions
 }
 
@@ -52,11 +50,10 @@ export default function App() {
     }, [currentCharacter, currentCharacterSet])
 
     useEffect(() => {
-        // Reset progress and create new deck when character type changes
         setDeck(createShuffledDeck(currentCharacterSet))
         setCurrentIndex(0)
         setWasCorrect(true)
-    }, [characterType])
+    }, [currentCharacterSet])
 
     const handleOptionClick = (option: string) => {
         if (option === currentCharacter.romanji) {

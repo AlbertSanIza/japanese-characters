@@ -42,7 +42,7 @@ export default function App() {
     const progress = ((currentIndex + 1) / deck.length) * 100
 
     useEffect(() => {
-        setOptions(shuffleArray([currentCharacter.romanji, ...getWrongOptions(currentCharacter.romanji, 2)]))
+        setOptions(shuffleArray([currentCharacter.romanji, ...getWrongOptions(currentCharacter.romanji, 3)]))
     }, [currentCharacter])
 
     const handleOptionClick = (option: string) => {

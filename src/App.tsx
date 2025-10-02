@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 import { hiragana } from '@/data/hiragana'
 import { cn } from '@/lib/utils'
-
-function getRandomCharacter() {
-    return hiragana[Math.floor(Math.random() * hiragana.length)]
-}
 
 function getWrongOptions(correctRomanji: string, count: number): string[] {
     const wrongOptions: string[] = []
@@ -31,10 +28,18 @@ function shuffleArray<T>(array: T[]): T[] {
     return shuffled
 }
 
+function createShuffledDeck() {
+    return shuffleArray([...hiragana])
+}
+
 export default function App() {
     const [wasCorrect, setWasCorrect] = useState(true)
+    const [currentIndex, setCurrentIndex] = useState(0)
     const [options, setOptions] = useState<string[]>([])
-    const [currentCharacter, setCurrentCharacter] = useState(getRandomCharacter())
+    const [deck, setDeck] = useState(() => createShuffledDeck())
+
+    const currentCharacter = deck[currentIndex]
+    const progress = ((currentIndex + 1) / deck.length) * 100
 
     useEffect(() => {
         setOptions(shuffleArray([currentCharacter.romanji, ...getWrongOptions(currentCharacter.romanji, 2)]))
@@ -49,12 +54,18 @@ export default function App() {
     }
 
     const nextCharacter = () => {
-        setCurrentCharacter(getRandomCharacter())
+        if (currentIndex + 1 >= deck.length) {
+            setDeck(createShuffledDeck())
+            setCurrentIndex(0)
+        } else {
+            setCurrentIndex(currentIndex + 1)
+        }
         setWasCorrect(true)
     }
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
+            <Progress value={progress} />
             <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{currentCharacter.character}</div>
             <div className="flex w-full flex-col gap-4 sm:w-fit sm:flex-row sm:gap-6">
                 {options.map((option) => (

@@ -81,10 +81,10 @@ export default function App() {
     }
 
     return (
-        <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 p-12">
+        <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 bg-stone-100 p-12">
             <div className="flex w-full items-center gap-6">
                 <Select value={characterType} onValueChange={handleCharacterTypeChange}>
-                    <SelectTrigger className="w-30">
+                    <SelectTrigger className="w-30 bg-white">
                         <SelectValue placeholder="Select characters" />
                     </SelectTrigger>
                     <SelectContent>

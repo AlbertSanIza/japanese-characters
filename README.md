@@ -1,3 +1,5 @@
+[![Deploy to Pages](https://github.com/AlbertSanIza/japanese-characters/actions/workflows/deploy.yml/badge.svg)](https://github.com/AlbertSanIza/japanese-characters/actions/workflows/deploy.yml)
+
 # Japanese Characters
 
 ![Japanese Characters](https://github.com/user-attachments/assets/0b8bf106-c57a-439e-bd30-57cad9497318)

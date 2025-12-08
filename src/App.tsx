@@ -1,5 +1,5 @@
 import { SignInButton, UserButton } from '@clerk/clerk-react'
-import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
+import { Authenticated, AuthLoading, Unauthenticated, useConvexAuth } from 'convex/react'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -37,6 +37,7 @@ function createShuffledDeck(characterSet: CharacterSet) {
 }
 
 export default function App() {
+    const { isLoading, isAuthenticated } = useConvexAuth()
     const [wasCorrect, setWasCorrect] = useState(true)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [options, setOptions] = useState<string[]>([])
@@ -95,17 +96,19 @@ export default function App() {
                 <Progress className="flex-1 [&>div]:bg-[#BE0028]" value={progress} />
                 <div>
                     <AuthLoading>
-                        <div className="flex size-7 items-center justify-center rounded-full bg-slate-200">
+                        <div className="flex size-7 items-center justify-center rounded-full bg-stone-200">
                             <Spinner />
                         </div>
                     </AuthLoading>
                     <Authenticated>
-                        <div className="flex items-center rounded-full bg-slate-200">
+                        <div className="flex size-7 items-center rounded-full bg-slate-200">
                             <UserButton />
                         </div>
                     </Authenticated>
                     <Unauthenticated>
-                        <SignInButton />
+                        <Button asChild>
+                            <SignInButton />
+                        </Button>
                     </Unauthenticated>
                 </div>
             </div>

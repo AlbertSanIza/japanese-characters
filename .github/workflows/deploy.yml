@@ -10,8 +10,6 @@ permissions:
 concurrency:
     group: 'pages'
     cancel-in-progress: false
-env:
-    CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
 jobs:
     Deploy:
         environment:
@@ -27,6 +25,11 @@ jobs:
               run: bun install
             - name: Build
               run: bunx convex deploy --cmd 'bun run build'
+              env:
+                  CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+                  VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+                  VITE_CLERK_SIGN_IN_FORCE_REDIRECT_URL: ${{ secrets.VITE_CLERK_SIGN_IN_FORCE_REDIRECT_URL }}
+                  VITE_CLERK_SIGN_UP_FORCE_REDIRECT_URL: ${{ secrets.VITE_CLERK_SIGN_UP_FORCE_REDIRECT_URL }}
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: Upload artifact

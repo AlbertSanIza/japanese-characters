@@ -11,7 +11,7 @@ concurrency:
     group: 'pages'
     cancel-in-progress: false
 env:
-    CONVEX_DEPLOYMENT: ${{ secrets.CONVEX_DEPLOY_KEY }}
+    CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
 jobs:
     Deploy:
         environment:

@@ -82,7 +82,7 @@ export default function App() {
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 bg-stone-100 p-12">
-            <div className="flex w-full items-center gap-6">
+            <div className="flex w-full items-center gap-6 bg-purple-500">
                 <Select value={characterType} onValueChange={handleCharacterTypeChange}>
                     <SelectTrigger className="w-30 bg-white">
                         <SelectValue placeholder="Select characters" />
@@ -93,23 +93,21 @@ export default function App() {
                     </SelectContent>
                 </Select>
                 <Progress className="flex-1 [&>div]:bg-[#BE0028]" value={progress} />
-                <div>
-                    <AuthLoading>
-                        <div className="flex size-7 items-center justify-center rounded-full bg-stone-200">
-                            <Spinner />
-                        </div>
-                    </AuthLoading>
-                    <Authenticated>
-                        <div className="flex size-7 items-center rounded-full bg-slate-200">
-                            <UserButton />
-                        </div>
-                    </Authenticated>
-                    <Unauthenticated>
-                        <Button asChild>
-                            <SignInButton />
-                        </Button>
-                    </Unauthenticated>
-                </div>
+                <AuthLoading>
+                    <div className="flex size-7 items-center justify-center rounded-full bg-stone-200">
+                        <Spinner />
+                    </div>
+                </AuthLoading>
+                <Authenticated>
+                    <div className="flex size-7 items-center rounded-full bg-slate-200">
+                        <UserButton />
+                    </div>
+                </Authenticated>
+                <Unauthenticated>
+                    <Button asChild>
+                        <SignInButton />
+                    </Button>
+                </Unauthenticated>
             </div>
             <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{currentCharacter.character}</div>
             <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">

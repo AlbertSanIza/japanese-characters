@@ -25,6 +25,8 @@ jobs:
               run: bun install
             - name: Build
               run: bunx convex deploy --cmd 'bun run build'
+              env:
+                  CONVEX_DEPLOYMENT: ${{ secrets.CONVEX_DEPLOYMENT }}
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: Upload artifact

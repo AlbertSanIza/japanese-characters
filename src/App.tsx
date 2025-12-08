@@ -37,10 +37,11 @@ function createShuffledDeck(characterSet: CharacterSet) {
 }
 
 export default function App() {
+    const [characterType, setCharacterType] = useState<'hiragana' | 'katakana'>('hiragana')
+
     const [wasCorrect, setWasCorrect] = useState(true)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [options, setOptions] = useState<string[]>([])
-    const [characterType, setCharacterType] = useState<'hiragana' | 'katakana'>('hiragana')
 
     const currentCharacterSet = characterType === 'hiragana' ? hiragana : katakana
     const [deck, setDeck] = useState(() => createShuffledDeck(currentCharacterSet))
@@ -76,16 +77,12 @@ export default function App() {
         setWasCorrect(true)
     }
 
-    const handleCharacterTypeChange = (value: string) => {
-        setCharacterType(value as 'hiragana' | 'katakana')
-    }
-
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 bg-stone-100 p-12">
-            <div className="flex w-full items-center gap-6 bg-purple-500">
-                <Select value={characterType} onValueChange={handleCharacterTypeChange}>
+            <div className="flex w-full items-center gap-6">
+                <Select value={characterType} onValueChange={(value: 'hiragana' | 'katakana') => setCharacterType(value)}>
                     <SelectTrigger className="w-30 bg-white">
-                        <SelectValue placeholder="Select characters" />
+                        <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="hiragana">Hiragana</SelectItem>

@@ -1,8 +1,11 @@
+import { SignInButton, UserButton } from '@clerk/clerk-react'
+import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Spinner } from '@/components/ui/spinner'
 import { hiragana, katakana } from '@/data'
 import { cn } from '@/lib/utils'
 
@@ -90,6 +93,21 @@ export default function App() {
                     </SelectContent>
                 </Select>
                 <Progress className="flex-1 [&>div]:bg-[#BE0028]" value={progress} />
+                <div>
+                    <AuthLoading>
+                        <div className="flex size-7 items-center justify-center rounded-full bg-slate-200">
+                            <Spinner />
+                        </div>
+                    </AuthLoading>
+                    <Authenticated>
+                        <div className="flex items-center rounded-full bg-slate-200">
+                            <UserButton />
+                        </div>
+                    </Authenticated>
+                    <Unauthenticated>
+                        <SignInButton />
+                    </Unauthenticated>
+                </div>
             </div>
             <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{currentCharacter.character}</div>
             <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">

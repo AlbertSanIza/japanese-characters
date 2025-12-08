@@ -1,5 +1,5 @@
 import { SignInButton, UserButton } from '@clerk/clerk-react'
-import { Authenticated, AuthLoading, Unauthenticated, useConvexAuth } from 'convex/react'
+import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -37,7 +37,6 @@ function createShuffledDeck(characterSet: CharacterSet) {
 }
 
 export default function App() {
-    const { isLoading, isAuthenticated } = useConvexAuth()
     const [wasCorrect, setWasCorrect] = useState(true)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [options, setOptions] = useState<string[]>([])

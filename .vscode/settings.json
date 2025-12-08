@@ -1,5 +1,6 @@
 {
     "cSpell.language": "en",
+    "cSpell.words": ["romanji"],
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit",
         "source.organizeImports": "explicit"

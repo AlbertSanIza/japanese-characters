@@ -82,24 +82,29 @@ export default function App() {
                     </Button>
                 </Unauthenticated>
             </div>
-            <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{current.character}</div>
-            <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">
-                {options.map((option) => (
-                    <Button
-                        size="lg"
-                        key={option}
-                        onClick={() => handleOptionClick(option === current.romanji)}
-                        disabled={!isAnswerCorrect && option !== current.romanji}
-                        variant={!isAnswerCorrect && option !== current.romanji ? 'destructive' : 'outline'}
-                        className={cn(
-                            'rounded-3xl md:h-26 md:px-10 md:text-6xl',
-                            !isAnswerCorrect && option !== current.romanji && 'opacity-10!',
-                            !isAnswerCorrect && option === current.romanji && 'border-green-600 bg-green-100 hover:bg-green-50'
-                        )}
-                    >
-                        {option}
-                    </Button>
-                ))}
+            <div className="flex w-full flex-1 gap-6">
+                <div>{/* HERE I WANT A CHARACTER MAP */}</div>
+                <div className="flex flex-1 flex-col items-center justify-center">
+                    <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{current.character}</div>
+                    <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">
+                        {options.map((option) => (
+                            <Button
+                                size="lg"
+                                key={option}
+                                onClick={() => handleOptionClick(option === current.romanji)}
+                                disabled={!isAnswerCorrect && option !== current.romanji}
+                                variant={!isAnswerCorrect && option !== current.romanji ? 'destructive' : 'outline'}
+                                className={cn(
+                                    'rounded-3xl md:h-26 md:px-10 md:text-6xl',
+                                    !isAnswerCorrect && option !== current.romanji && 'opacity-10!',
+                                    !isAnswerCorrect && option === current.romanji && 'border-green-600 bg-green-100 hover:bg-green-50'
+                                )}
+                            >
+                                {option}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     )

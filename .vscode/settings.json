@@ -17,13 +17,18 @@
     },
     "files.insertFinalNewline": true,
     "files.readonlyInclude": {
+        ".github/instructions/convex.instructions.md": true,
         "**/bun.lock": true
     },
     "files.watcherExclude": {
+        ".github/instructions/convex.instructions.md": true,
         "**/bun.lock": true
     },
     "git.autofetch": true,
     "git.confirmSync": false,
+    "search.exclude": {
+        "**/bun.lock": true
+    },
     "tailwindCSS.classFunctions": ["clsx", "cn", "cva", "twMerge", "tw", "clsx", "tw\\.[a-z-]+"],
     "workbench.iconTheme": "material-icon-theme"
 }

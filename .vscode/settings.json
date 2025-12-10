@@ -26,6 +26,7 @@
     },
     "git.autofetch": true,
     "git.confirmSync": false,
+    "github.copilot.nextEditSuggestions.enabled": true,
     "search.exclude": {
         "**/bun.lock": true
     },

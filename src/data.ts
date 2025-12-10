@@ -1,4 +1,6 @@
-export const WRITING_SYSTEMS: Record<'hiragana' | 'katakana', { character: string; romanji: string }[]> = {
+import type { WritingSystem } from '@/lib/types'
+
+export const WRITING_SYSTEMS_DATA: Record<WritingSystem, { character: string; romanji: string }[]> = {
     hiragana: [
         { character: 'あ', romanji: 'a' },
         { character: 'い', romanji: 'i' },

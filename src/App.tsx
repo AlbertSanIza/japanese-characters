@@ -1,86 +1,62 @@
 import { SignInButton, UserButton } from '@clerk/clerk-react'
 import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Spinner } from '@/components/ui/spinner'
-import { hiragana, katakana } from '@/data'
-import { cn } from '@/lib/utils'
+import { WRITING_SYSTEMS_DATA } from '@/data'
+import type { WritingSystem } from '@/lib/types'
+import { cn, shuffleArray } from '@/lib/utils'
 
-type CharacterSet = typeof hiragana | typeof katakana
-
-function getWrongOptions(correctRomanji: string, count: number, characterSet: CharacterSet): string[] {
+function getOptions(correctRomanji: string, count: number, type: WritingSystem): string[] {
     const wrongOptions: string[] = []
-    const filteredRomanji = characterSet.map((h) => h.romanji).filter((r) => r !== correctRomanji)
+    const filteredRomanji = WRITING_SYSTEMS_DATA[type].map((h) => h.romanji).filter((r) => r !== correctRomanji)
     while (wrongOptions.length < count) {
         const randomOption = filteredRomanji[Math.floor(Math.random() * filteredRomanji.length)]
         if (!wrongOptions.includes(randomOption)) {
             wrongOptions.push(randomOption)
         }
     }
-    return wrongOptions
-}
-
-function shuffleArray<T>(array: T[]): T[] {
-    const shuffled = [...array]
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-    }
-    return shuffled
-}
-
-function createShuffledDeck(characterSet: CharacterSet) {
-    return shuffleArray([...characterSet])
+    return shuffleArray([correctRomanji, ...wrongOptions])
 }
 
 export default function App() {
-    const [characterType, setCharacterType] = useState<'hiragana' | 'katakana'>('hiragana')
+    const [writingSystem, setWritingSystem] = useState<WritingSystem>('hiragana')
+    const [deck, setDeck] = useState(() => shuffleArray(WRITING_SYSTEMS_DATA[writingSystem]))
+    const [index, setIndex] = useState(0)
+    const [isAnswerCorrect, setIsAnswerCorrect] = useState(true)
 
-    const [wasCorrect, setWasCorrect] = useState(true)
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [options, setOptions] = useState<string[]>([])
+    const current = deck[index]
+    const options = useMemo(() => getOptions(current.romanji, 3, writingSystem), [current.romanji, writingSystem])
+    const progress = ((index + 1) / deck.length) * 100
 
-    const currentCharacterSet = characterType === 'hiragana' ? hiragana : katakana
-    const [deck, setDeck] = useState(() => createShuffledDeck(currentCharacterSet))
-
-    const currentCharacter = deck[currentIndex]
-    const progress = ((currentIndex + 1) / deck.length) * 100
-
-    useEffect(() => {
-        setOptions(shuffleArray([currentCharacter.romanji, ...getWrongOptions(currentCharacter.romanji, 3, currentCharacterSet)]))
-    }, [currentCharacter, currentCharacterSet])
-
-    useEffect(() => {
-        setDeck(createShuffledDeck(currentCharacterSet))
-        setCurrentIndex(0)
-        setWasCorrect(true)
-    }, [currentCharacterSet])
-
-    const handleOptionClick = (option: string) => {
-        if (option === currentCharacter.romanji) {
-            nextCharacter()
+    const handleOptionClick = (isValid: boolean) => {
+        setIsAnswerCorrect(isValid)
+        if (!isValid) {
             return
         }
-        setWasCorrect(false)
-    }
-
-    const nextCharacter = () => {
-        if (currentIndex + 1 >= deck.length) {
-            setDeck(createShuffledDeck(currentCharacterSet))
-            setCurrentIndex(0)
-        } else {
-            setCurrentIndex(currentIndex + 1)
-        }
-        setWasCorrect(true)
+        setIndex((prevIndex) => {
+            if (prevIndex + 1 >= deck.length) {
+                setDeck(shuffleArray(WRITING_SYSTEMS_DATA[writingSystem]))
+                return 0
+            }
+            return prevIndex + 1
+        })
     }
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center gap-6 bg-stone-100 p-12">
             <div className="flex w-full items-center gap-6">
-                <Select value={characterType} onValueChange={(value: 'hiragana' | 'katakana') => setCharacterType(value)}>
+                <Select
+                    value={writingSystem}
+                    onValueChange={(selectedWritingSystem: WritingSystem) => {
+                        setWritingSystem(selectedWritingSystem)
+                        setDeck(shuffleArray(WRITING_SYSTEMS_DATA[selectedWritingSystem]))
+                        setIndex(0)
+                    }}
+                >
                     <SelectTrigger className="w-30 bg-white">
                         <SelectValue />
                     </SelectTrigger>
@@ -106,20 +82,20 @@ export default function App() {
                     </Button>
                 </Unauthenticated>
             </div>
-            <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{currentCharacter.character}</div>
+            <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{current.character}</div>
             <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">
                 {options.map((option) => (
                     <Button
                         size="lg"
-                        variant={!wasCorrect && option !== currentCharacter.romanji ? 'destructive' : 'outline'}
+                        key={option}
+                        onClick={() => handleOptionClick(option === current.romanji)}
+                        disabled={!isAnswerCorrect && option !== current.romanji}
+                        variant={!isAnswerCorrect && option !== current.romanji ? 'destructive' : 'outline'}
                         className={cn(
                             'rounded-3xl md:h-26 md:px-10 md:text-6xl',
-                            !wasCorrect && option !== currentCharacter.romanji && 'opacity-10!',
-                            !wasCorrect && option === currentCharacter.romanji && 'border-green-600 bg-green-100 hover:bg-green-50'
+                            !isAnswerCorrect && option !== current.romanji && 'opacity-10!',
+                            !isAnswerCorrect && option === current.romanji && 'border-green-600 bg-green-100 hover:bg-green-50'
                         )}
-                        key={option}
-                        onClick={() => handleOptionClick(option)}
-                        disabled={!wasCorrect && option !== currentCharacter.romanji}
                     >
                         {option}
                     </Button>

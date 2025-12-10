@@ -2,6 +2,7 @@ import { SignInButton, UserButton } from '@clerk/clerk-react'
 import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
 import { useMemo, useState } from 'react'
 
+import { CharacterChart } from '@/components/CharacterChart'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -83,7 +84,7 @@ export default function App() {
                 </Unauthenticated>
             </div>
             <div className="flex w-full flex-1 gap-6">
-                <div>{/* HERE I WANT A CHARACTER MAP */}</div>
+                <CharacterChart writingSystem={writingSystem} />
                 <div className="flex flex-1 flex-col items-center justify-center">
                     <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{current.character}</div>
                     <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">

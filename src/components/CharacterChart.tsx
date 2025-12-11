@@ -60,7 +60,6 @@ export function CharacterChart({ writingSystem, activeRomanji }: { writingSystem
                                 )}
                             >
                                 <div className="text-b pb-0.5 text-3xl leading-none font-light">{charMap.get(romanji)}</div>
-
                                 <Progress
                                     value={(score / 7) * 100}
                                     className={cn(

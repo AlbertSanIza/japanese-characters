@@ -35,7 +35,6 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
             <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}>
                 {GOJUON_ORDER.map((row, rowIndex) =>
                     row.map((romanji, colIndex) => {
-                        const character = charMap.get(romanji)
                         const isEmpty = !romanji
                         const progress = romanji ? progressMap.get(romanji) : undefined
                         const score = progress?.tested ?? 0
@@ -52,27 +51,18 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                                             : 'from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100')
                                 )}
                             >
-                                {!isEmpty && (
-                                    <>
-                                        <div className="flex flex-1 items-center justify-center">
-                                            <div
-                                                className={cn(
-                                                    'text-2xl leading-none font-bold',
-                                                    writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900'
-                                                )}
-                                            >
-                                                {character}
-                                            </div>
-                                        </div>
-                                        <Progress
-                                            value={(score / 7) * 100}
-                                            className={cn(
-                                                'h-1.5 w-full',
-                                                score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500'
-                                            )}
-                                        />
-                                    </>
-                                )}
+                                <div className="flex flex-1 items-center justify-center">
+                                    <div className={cn('text-2xl leading-none font-bold', writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900')}>
+                                        {charMap.get(romanji)}
+                                    </div>
+                                </div>
+                                <Progress
+                                    value={(score / 7) * 100}
+                                    className={cn(
+                                        'h-1.5 w-full',
+                                        score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500'
+                                    )}
+                                />
                             </div>
                         )
                     })

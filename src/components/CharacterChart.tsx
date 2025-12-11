@@ -1,6 +1,17 @@
 import { useAuth } from '@clerk/clerk-react'
 import { Authenticated, useMutation, useQuery } from 'convex/react'
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { api } from '@/convex/_generated/api'
@@ -68,9 +79,23 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                 )}
             </div>
             <Authenticated>
-                <Button variant="destructive" onClick={() => resetProgress({ writingSystem })}>
-                    Reset Scores
-                </Button>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant="outline">Reset Progress</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently reset your progress for the <b>{writingSystem}</b> writing system.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => resetProgress({ writingSystem })}>Reset</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </Authenticated>
         </div>
     )

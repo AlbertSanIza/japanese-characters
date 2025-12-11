@@ -54,7 +54,10 @@ export function CharacterChart({ writingSystem, activeRomanji }: { writingSystem
                         return (
                             <div
                                 key={`${rowIndex}-${colIndex}`}
-                                className={cn('rounded-xl border border-transparent p-2', romanji === activeRomanji && 'border border-slate-300 bg-slate-50')}
+                                className={cn(
+                                    'rounded-md border border-transparent p-2 transition-[color,box-shadow]',
+                                    romanji === activeRomanji && 'border border-input bg-slate-50 shadow-xs'
+                                )}
                             >
                                 <div className="text-b pb-0.5 text-3xl leading-none font-light">{charMap.get(romanji)}</div>
 

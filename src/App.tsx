@@ -91,7 +91,7 @@ export default function App() {
                                 onClick={() => handleOptionClick(!!userId, option === current.romanji)}
                                 variant={!isAnswerCorrect && option !== current.romanji ? 'destructive' : 'outline'}
                                 className={cn(
-                                    'rounded-3xl md:h-26 md:px-10 md:text-6xl',
+                                    'rounded-3xl border md:h-26 md:px-10 md:text-6xl',
                                     !isAnswerCorrect && option !== current.romanji && 'opacity-10!',
                                     !isAnswerCorrect && option === current.romanji && 'border-green-600 bg-green-100 hover:bg-green-50'
                                 )}

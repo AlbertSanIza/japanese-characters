@@ -30,6 +30,7 @@ jobs:
                   VITE_CLERK_PUBLISHABLE_KEY: ${{ vars.VITE_CLERK_PUBLISHABLE_KEY }}
                   VITE_CLERK_SIGN_IN_FORCE_REDIRECT_URL: ${{ vars.VITE_CLERK_SIGN_IN_FORCE_REDIRECT_URL }}
                   VITE_CLERK_SIGN_UP_FORCE_REDIRECT_URL: ${{ vars.VITE_CLERK_SIGN_UP_FORCE_REDIRECT_URL }}
+                  VITE_CLERK_AFTER_SIGN_OUT_URL: ${{ vars.VITE_CLERK_AFTER_SIGN_OUT_URL }}
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: Upload artifact

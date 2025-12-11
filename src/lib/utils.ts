@@ -1,6 +1,9 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+import { WRITING_SYSTEMS_DATA } from '@/data'
+import type { WritingSystem } from '@/lib/types'
+
 if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) {
     throw new Error('Missing Publishable Key')
 }
@@ -30,4 +33,16 @@ export function shuffleArray<T>(array: T[]): T[] {
         ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
     return shuffled
+}
+
+export function getAnswerOptions(correctRomanji: string, count: number, type: WritingSystem): string[] {
+    const wrongOptions: string[] = []
+    const filteredRomanji = WRITING_SYSTEMS_DATA[type].map((h) => h.romanji).filter((r) => r !== correctRomanji)
+    while (wrongOptions.length < count) {
+        const randomOption = filteredRomanji[Math.floor(Math.random() * filteredRomanji.length)]
+        if (!wrongOptions.includes(randomOption)) {
+            wrongOptions.push(randomOption)
+        }
+    }
+    return shuffleArray([correctRomanji, ...wrongOptions])
 }

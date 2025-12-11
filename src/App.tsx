@@ -10,19 +10,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { api } from '@/convex/_generated/api'
 import { WRITING_SYSTEMS_DATA } from '@/data'
 import type { WritingSystem } from '@/lib/types'
-import { cn, shuffleArray } from '@/lib/utils'
-
-function getOptions(correctRomanji: string, count: number, type: WritingSystem): string[] {
-    const wrongOptions: string[] = []
-    const filteredRomanji = WRITING_SYSTEMS_DATA[type].map((h) => h.romanji).filter((r) => r !== correctRomanji)
-    while (wrongOptions.length < count) {
-        const randomOption = filteredRomanji[Math.floor(Math.random() * filteredRomanji.length)]
-        if (!wrongOptions.includes(randomOption)) {
-            wrongOptions.push(randomOption)
-        }
-    }
-    return shuffleArray([correctRomanji, ...wrongOptions])
-}
+import { cn, getAnswerOptions, shuffleArray } from '@/lib/utils'
 
 export default function App() {
     const { userId } = useAuth()
@@ -33,7 +21,7 @@ export default function App() {
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(true)
 
     const current = deck[index]
-    const options = useMemo(() => getOptions(current.romanji, 3, writingSystem), [current.romanji, writingSystem])
+    const options = useMemo(() => getAnswerOptions(current.romanji, 3, writingSystem), [current.romanji, writingSystem])
     const progress = ((index + 1) / deck.length) * 100
 
     const handleOptionClick = (isSignedIn: boolean, isValid: boolean) => {

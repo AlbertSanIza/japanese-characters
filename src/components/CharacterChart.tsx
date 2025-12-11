@@ -33,7 +33,7 @@ const GOJUON_ORDER = [
     ['n', '', '', '', '']
 ]
 
-export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem }) {
+export function CharacterChart({ writingSystem, activeRomanji }: { writingSystem: WritingSystem; activeRomanji?: string }) {
     const { userId } = useAuth()
     const resetProgress = useMutation(api.progress.reset)
     const progressData = useQuery(api.progress.getProgress, userId ? { writingSystem } : 'skip')
@@ -43,7 +43,7 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-5 gap-0.5">
                 {GOJUON_ORDER.map((row, rowIndex) =>
                     row.map((romanji, colIndex) => {
                         const isEmpty = !romanji
@@ -52,23 +52,25 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                         }
                         const score = progressMap.get(romanji)?.tested ?? 0
                         return (
-                            <div key={`${rowIndex}-${colIndex}`}>
+                            <div
+                                key={`${rowIndex}-${colIndex}`}
+                                className={cn('rounded-xl border border-transparent p-2', romanji === activeRomanji && 'border border-slate-300 bg-slate-50')}
+                            >
                                 <div className="text-b pb-0.5 text-3xl leading-none font-light">{charMap.get(romanji)}</div>
-                                <Authenticated>
-                                    <Progress
-                                        value={(score / 7) * 100}
-                                        className={cn(
-                                            'h-1.5',
-                                            score >= 6
-                                                ? '[&>div]:bg-green-600'
-                                                : score >= 3
-                                                  ? '[&>div]:bg-yellow-500'
-                                                  : score > 0
-                                                    ? '[&>div]:bg-red-500'
-                                                    : '[&>div]:bg-slate-200'
-                                        )}
-                                    />
-                                </Authenticated>
+
+                                <Progress
+                                    value={(score / 7) * 100}
+                                    className={cn(
+                                        'h-1.5',
+                                        score >= 7
+                                            ? '[&>div]:bg-green-600'
+                                            : score >= 3
+                                              ? '[&>div]:bg-yellow-500'
+                                              : score > 0
+                                                ? '[&>div]:bg-red-500'
+                                                : '[&>div]:bg-slate-200'
+                                    )}
+                                />
                             </div>
                         )
                     })

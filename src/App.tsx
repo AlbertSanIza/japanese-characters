@@ -79,7 +79,7 @@ export default function App() {
                 </Unauthenticated>
             </div>
             <div className="flex w-full flex-1 gap-6">
-                <CharacterChart writingSystem={writingSystem} />
+                <CharacterChart writingSystem={writingSystem} activeRomanji={current.romanji} />
                 <div className="flex flex-1 flex-col items-center justify-center">
                     <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{current.character}</div>
                     <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">

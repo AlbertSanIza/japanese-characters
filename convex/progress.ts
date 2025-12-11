@@ -39,7 +39,6 @@ export const reset = mutation({
             .query('progress')
             .withIndex('by_userId_writingSystem', (q) => q.eq('userId', identity.subject).eq('writingSystem', writingSystem))
             .collect()
-
         for (const record of records) {
             await ctx.db.delete(record._id)
         }

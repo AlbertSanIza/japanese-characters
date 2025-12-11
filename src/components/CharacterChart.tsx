@@ -50,16 +50,13 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                         if (isEmpty) {
                             return <div key={`${rowIndex}-${colIndex}`} className="invisible" />
                         }
-                        const progress = romanji ? progressMap.get(romanji) : undefined
-                        const score = progress?.tested ?? 0
+                        const score = progressMap.get(romanji)?.tested ?? 0
                         return (
                             <div
                                 key={`${rowIndex}-${colIndex}`}
                                 className={cn(
-                                    'relative flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-200 bg-linear-to-br p-3 transition-all duration-200 hover:shadow-md',
-                                    writingSystem === 'hiragana'
-                                        ? 'from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100'
-                                        : 'from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100'
+                                    'flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-200 bg-linear-to-br p-3 transition-all duration-200',
+                                    writingSystem === 'hiragana' ? 'from-purple-50 to-pink-50' : 'from-blue-50 to-cyan-50'
                                 )}
                             >
                                 <div className="flex flex-1 items-center justify-center">
@@ -70,7 +67,10 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                                 <Authenticated>
                                     <Progress
                                         value={(score / 7) * 100}
-                                        className={cn('h-2', score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500')}
+                                        className={cn(
+                                            'h-1.5',
+                                            score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500'
+                                        )}
                                     />
                                 </Authenticated>
                             </div>

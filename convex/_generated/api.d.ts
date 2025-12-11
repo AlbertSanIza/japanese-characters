@@ -8,13 +8,17 @@
  * @module
  */
 
+import type * as progress from "../progress.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  progress: typeof progress;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.

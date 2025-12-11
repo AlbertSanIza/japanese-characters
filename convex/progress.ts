@@ -14,18 +14,13 @@ export const answer = mutation({
             .query('progress')
             .withIndex('by_userId_writingSystem_romanji', (q) => q.eq('userId', identity.subject).eq('writingSystem', writingSystem).eq('romanji', romanji))
             .unique()
-        console.log('🚀 ~ existing:', existing)
         if (existing) {
-            const tested = Math.min((existing.tested ?? 0) + 1, 10)
-            let correct = existing.correct ?? 0
-            if (isCorrect) {
-                correct += 1
-            }
-            correct = Math.max(0, Math.min(correct, tested))
+            const tested = Math.min(10, existing.tested + 1)
+            const correct = Math.max(0, Math.min(10, existing.correct + (isCorrect ? 1 : -1)))
             await ctx.db.patch(existing._id, { tested, correct })
-        } else {
-            await ctx.db.insert('progress', { userId: identity.subject, writingSystem, romanji, tested: 1, correct: isCorrect ? 1 : 0 })
+            return
         }
+        await ctx.db.insert('progress', { userId: identity.subject, writingSystem, romanji, tested: 1, correct: isCorrect ? 1 : 0 })
     }
 })
 

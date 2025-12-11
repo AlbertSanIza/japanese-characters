@@ -1,5 +1,6 @@
 {
     "recommendations": [
+        "anthropic.claude-code",
         "bradlc.vscode-tailwindcss",
         "chakrounanas.turbo-console-log",
         "dbaeumer.vscode-eslint",
@@ -7,6 +8,7 @@
         "esbenp.prettier-vscode",
         "github.copilot",
         "github.vscode-github-actions",
+        "openai.chatgpt",
         "pkief.material-icon-theme",
         "streetsidesoftware.code-spell-checker"
     ]

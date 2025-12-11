@@ -9,6 +9,7 @@
  */
 
 import type * as progress from "../progress.js";
+import type * as utils from "../utils.js";
 
 import type {
   ApiFromModules,
@@ -18,6 +19,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   progress: typeof progress;
+  utils: typeof utils;
 }>;
 
 /**

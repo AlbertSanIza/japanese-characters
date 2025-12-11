@@ -1,3 +1,9 @@
+import { useAuth } from '@clerk/clerk-react'
+import { useMutation, useQuery } from 'convex/react'
+import { useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { api } from '@/convex/_generated/api'
 import { WRITING_SYSTEMS_DATA } from '@/data'
 import type { WritingSystem } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -17,47 +23,77 @@ const GOJUON_ORDER = [
 ]
 
 export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem }) {
+    const { userId } = useAuth()
+    const resetProgress = useMutation(api.progress.reset)
+    const progressData = useQuery(api.progress.getProgress, userId ? { writingSystem } : 'skip')
+
+    const [showRomanji, setShowRomanji] = useState(false)
     const data = WRITING_SYSTEMS_DATA[writingSystem]
     const charMap = new Map(data.map((item) => [item.romanji, item.character]))
 
-    return (
-        <div className="h-full w-full max-w-100 overflow-auto rounded-lg border border-slate-300 bg-white p-6 shadow-sm">
-            <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}>
-                {GOJUON_ORDER.map((row, rowIndex) =>
-                    row.map((romanji, colIndex) => {
-                        const character = charMap.get(romanji)
-                        const isEmpty = !romanji
+    const progressMap = new Map(progressData?.map((p) => [p.romanji, { tested: p.tested, correct: p.correct }]) ?? [])
 
-                        return (
-                            <div
-                                key={`${rowIndex}-${colIndex}`}
-                                className={cn(
-                                    isEmpty && 'invisible',
-                                    !isEmpty &&
-                                        'flex flex-col items-center justify-center rounded-lg border border-slate-200 bg-linear-to-br p-3 transition-all duration-200 hover:shadow-md',
-                                    !isEmpty &&
-                                        (writingSystem === 'hiragana'
-                                            ? 'from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100'
-                                            : 'from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100')
-                                )}
-                            >
-                                {!isEmpty && (
-                                    <>
-                                        <div
-                                            className={cn(
-                                                'text-2xl leading-none font-bold',
-                                                writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900'
-                                            )}
-                                        >
-                                            {character}
-                                        </div>
-                                        <div className="mt-1 text-xs font-medium text-slate-600">{romanji}</div>
-                                    </>
-                                )}
-                            </div>
-                        )
-                    })
-                )}
+    return (
+        <div className="flex size-full max-w-100 flex-col overflow-auto rounded-lg border bg-stone-50 p-6">
+            <div className="mb-4 flex-1 overflow-auto">
+                <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}>
+                    {GOJUON_ORDER.map((row, rowIndex) =>
+                        row.map((romanji, colIndex) => {
+                            const character = charMap.get(romanji)
+                            const isEmpty = !romanji
+                            const progress = romanji ? progressMap.get(romanji) : undefined
+                            const accuracy = progress ? Math.round((progress.correct / progress.tested) * 100) : 0
+                            return (
+                                <div
+                                    key={`${rowIndex}-${colIndex}`}
+                                    className={cn(
+                                        isEmpty && 'invisible',
+                                        !isEmpty &&
+                                            'relative flex flex-col items-center justify-center rounded-lg border border-slate-200 bg-linear-to-br p-3 transition-all duration-200 hover:shadow-md',
+                                        !isEmpty &&
+                                            (writingSystem === 'hiragana'
+                                                ? 'from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100'
+                                                : 'from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100')
+                                    )}
+                                >
+                                    {!isEmpty && (
+                                        <>
+                                            <div
+                                                className={cn(
+                                                    'absolute top-1 right-1 rounded px-1 text-[0.6rem] font-semibold',
+                                                    accuracy >= 80
+                                                        ? 'bg-green-200 text-green-800'
+                                                        : accuracy >= 60
+                                                          ? 'bg-yellow-200 text-yellow-800'
+                                                          : 'bg-red-200 text-red-800'
+                                                )}
+                                            >
+                                                {accuracy}%
+                                            </div>
+                                            <div
+                                                className={cn(
+                                                    'text-2xl leading-none font-bold',
+                                                    writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900'
+                                                )}
+                                            >
+                                                {character}
+                                            </div>
+                                            {showRomanji && <div className="mt-1 text-xs font-medium text-slate-600">{romanji}</div>}
+                                        </>
+                                    )}
+                                </div>
+                            )
+                        })
+                    )}
+                </div>
+            </div>
+            <div className="mt-auto flex flex-col gap-2">
+                <Button variant="outline" size="sm" onClick={() => setShowRomanji(!showRomanji)}>
+                    {showRomanji ? 'Hide' : 'Show'} Romanji
+                </Button>
+                <Button variant="destructive" size="sm" onClick={() => resetProgress({ writingSystem })}>
+                    Reset Scores
+                </Button>
             </div>
         </div>
     )

@@ -24,7 +24,7 @@ export const answer = mutation({
             .withIndex('by_userId_writingSystem_romanji', (q) => q.eq('userId', identity.subject).eq('writingSystem', writingSystem).eq('romanji', romanji))
             .unique()
         if (existingProgress) {
-            await ctx.db.patch(existingProgress._id, { tested: Math.max(0, Math.min(10, existingProgress.tested + (isCorrect ? 1 : -2))) })
+            await ctx.db.patch(existingProgress._id, { tested: Math.max(0, Math.min(7, existingProgress.tested + (isCorrect ? 1 : -2))) })
             return
         }
         await ctx.db.insert('progress', { userId: identity.subject, writingSystem, romanji, tested: isCorrect ? 1 : 0 })

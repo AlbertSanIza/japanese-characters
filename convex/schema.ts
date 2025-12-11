@@ -1,10 +1,12 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
+export const WRITING_SYSTEM = v.union(v.literal('hiragana'), v.literal('katakana'))
+
 export default defineSchema({
     progress: defineTable({
         userId: v.string(),
-        writingSystem: v.string(),
+        writingSystem: WRITING_SYSTEM,
         romanji: v.string(),
         tested: v.number(),
         correct: v.number()

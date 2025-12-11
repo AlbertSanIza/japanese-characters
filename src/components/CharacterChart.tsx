@@ -58,10 +58,7 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                                 </div>
                                 <Progress
                                     value={(score / 7) * 100}
-                                    className={cn(
-                                        'h-1.5 w-full',
-                                        score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500'
-                                    )}
+                                    className={cn('h-2', score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500')}
                                 />
                             </div>
                         )

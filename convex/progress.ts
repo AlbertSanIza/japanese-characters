@@ -2,14 +2,12 @@ import { v } from 'convex/values'
 
 import { mutation, query } from './_generated/server'
 import { WRITING_SYSTEM } from './schema'
+import { getUserIdentity } from './utils'
 
 export const getProgress = query({
     args: { writingSystem: WRITING_SYSTEM },
     async handler(ctx, { writingSystem }) {
-        const identity = await ctx.auth.getUserIdentity()
-        if (identity === null) {
-            throw new Error('Not Authenticated')
-        }
+        const identity = await getUserIdentity(ctx)
         return await ctx.db
             .query('progress')
             .withIndex('by_userId_writingSystem', (q) => q.eq('userId', identity.subject).eq('writingSystem', writingSystem))
@@ -20,10 +18,7 @@ export const getProgress = query({
 export const answer = mutation({
     args: { writingSystem: WRITING_SYSTEM, romanji: v.string(), isCorrect: v.boolean() },
     async handler(ctx, { writingSystem, romanji, isCorrect }) {
-        const identity = await ctx.auth.getUserIdentity()
-        if (identity === null) {
-            throw new Error('Not Authenticated')
-        }
+        const identity = await getUserIdentity(ctx)
         const existing = await ctx.db
             .query('progress')
             .withIndex('by_userId_writingSystem_romanji', (q) => q.eq('userId', identity.subject).eq('writingSystem', writingSystem).eq('romanji', romanji))
@@ -41,10 +36,7 @@ export const answer = mutation({
 export const reset = mutation({
     args: { writingSystem: WRITING_SYSTEM },
     async handler(ctx, { writingSystem }) {
-        const identity = await ctx.auth.getUserIdentity()
-        if (identity === null) {
-            throw new Error('Not Authenticated')
-        }
+        const identity = await getUserIdentity(ctx)
         const records = await ctx.db
             .query('progress')
             .withIndex('by_userId_writingSystem', (q) => q.eq('userId', identity.subject).eq('writingSystem', writingSystem))

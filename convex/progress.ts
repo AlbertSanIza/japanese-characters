@@ -19,17 +19,15 @@ export const answer = mutation({
     args: { writingSystem: WRITING_SYSTEM, romanji: v.string(), isCorrect: v.boolean() },
     async handler(ctx, { writingSystem, romanji, isCorrect }) {
         const identity = await getUserIdentity(ctx)
-        const existing = await ctx.db
+        const existingProgress = await ctx.db
             .query('progress')
             .withIndex('by_userId_writingSystem_romanji', (q) => q.eq('userId', identity.subject).eq('writingSystem', writingSystem).eq('romanji', romanji))
             .unique()
-        if (existing) {
-            const tested = Math.min(10, existing.tested + 1)
-            const correct = Math.max(0, Math.min(10, existing.correct + (isCorrect ? 1 : -1)))
-            await ctx.db.patch(existing._id, { tested, correct })
+        if (existingProgress) {
+            await ctx.db.patch(existingProgress._id, { tested: Math.max(0, Math.min(10, existingProgress.tested + (isCorrect ? 1 : -2))) })
             return
         }
-        await ctx.db.insert('progress', { userId: identity.subject, writingSystem, romanji, tested: 1, correct: isCorrect ? 1 : 0 })
+        await ctx.db.insert('progress', { userId: identity.subject, writingSystem, romanji, tested: isCorrect ? 1 : 0 })
     }
 })
 

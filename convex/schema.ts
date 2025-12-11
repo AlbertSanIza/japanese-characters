@@ -8,9 +8,8 @@ export default defineSchema({
         userId: v.string(),
         writingSystem: WRITING_SYSTEM,
         romanji: v.string(),
-        tested: v.number(),
-        correct: v.number()
+        tested: v.number()
     })
-        .index('by_userId_writingSystem_romanji', ['userId', 'writingSystem', 'romanji'])
         .index('by_userId_writingSystem', ['userId', 'writingSystem'])
+        .index('by_userId_writingSystem_romanji', ['userId', 'writingSystem', 'romanji'])
 })

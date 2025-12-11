@@ -42,8 +42,8 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
     const charMap = new Map(WRITING_SYSTEMS_DATA[writingSystem].map((item) => [item.romanji, item.character]))
 
     return (
-        <div className="flex flex-col items-center gap-6">
-            <div className="grid grid-cols-5 gap-2">
+        <div className="flex flex-col items-center gap-4">
+            <div className="grid grid-cols-5 gap-4">
                 {GOJUON_ORDER.map((row, rowIndex) =>
                     row.map((romanji, colIndex) => {
                         const isEmpty = !romanji
@@ -52,16 +52,8 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                         }
                         const score = progressMap.get(romanji)?.tested ?? 0
                         return (
-                            <div
-                                key={`${rowIndex}-${colIndex}`}
-                                className={cn(
-                                    'flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-200 bg-linear-to-br p-3 transition-all duration-200',
-                                    writingSystem === 'hiragana' ? 'from-purple-50 to-pink-50' : 'from-blue-50 to-cyan-50'
-                                )}
-                            >
-                                <div className={cn('text-2xl leading-none', writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900')}>
-                                    {charMap.get(romanji)}
-                                </div>
+                            <div key={`${rowIndex}-${colIndex}`}>
+                                <div className="text-b pb-0.5 text-3xl leading-none font-light">{charMap.get(romanji)}</div>
                                 <Authenticated>
                                     <Progress
                                         value={(score / 7) * 100}
@@ -85,7 +77,9 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
             <Authenticated>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant="destructive">Reset Progress</Button>
+                        <Button size="sm" variant="destructive">
+                            Reset Progress
+                        </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>

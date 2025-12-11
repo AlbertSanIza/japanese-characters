@@ -3,6 +3,7 @@ import { useMutation, useQuery } from 'convex/react'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 import { api } from '@/convex/_generated/api'
 import { WRITING_SYSTEMS_DATA } from '@/data'
 import type { WritingSystem } from '@/lib/types'
@@ -31,7 +32,7 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
     const data = WRITING_SYSTEMS_DATA[writingSystem]
     const charMap = new Map(data.map((item) => [item.romanji, item.character]))
 
-    const progressMap = new Map(progressData?.map((p) => [p.romanji, { tested: p.tested, correct: p.correct }]) ?? [])
+    const progressMap = new Map(progressData?.map((p) => [p.romanji, { tested: p.tested }]) ?? [])
 
     return (
         <div className="flex size-full max-w-100 flex-col overflow-auto rounded-lg border bg-stone-50 p-6">
@@ -42,7 +43,7 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                             const character = charMap.get(romanji)
                             const isEmpty = !romanji
                             const progress = romanji ? progressMap.get(romanji) : undefined
-                            const accuracy = progress ? Math.round((progress.correct / progress.tested) * 100) : 0
+                            const score = progress?.tested ?? 0
                             return (
                                 <div
                                     key={`${rowIndex}-${colIndex}`}
@@ -58,27 +59,24 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                                 >
                                     {!isEmpty && (
                                         <>
-                                            <div
-                                                className={cn(
-                                                    'absolute top-1 right-1 rounded px-1 text-[0.6rem] font-semibold',
-                                                    accuracy >= 80
-                                                        ? 'bg-green-200 text-green-800'
-                                                        : accuracy >= 60
-                                                          ? 'bg-yellow-200 text-yellow-800'
-                                                          : 'bg-red-200 text-red-800'
-                                                )}
-                                            >
-                                                {accuracy}%
+                                            <div className="flex flex-1 items-center justify-center">
+                                                <div
+                                                    className={cn(
+                                                        'text-2xl leading-none font-bold',
+                                                        writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900'
+                                                    )}
+                                                >
+                                                    {character}
+                                                </div>
                                             </div>
-                                            <div
+                                            {showRomanji && <div className="mb-1 text-xs font-medium text-slate-600">{romanji}</div>}
+                                            <Progress
+                                                value={(score / 7) * 100}
                                                 className={cn(
-                                                    'text-2xl leading-none font-bold',
-                                                    writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900'
+                                                    'h-1.5 w-full',
+                                                    score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500'
                                                 )}
-                                            >
-                                                {character}
-                                            </div>
-                                            {showRomanji && <div className="mt-1 text-xs font-medium text-slate-600">{romanji}</div>}
+                                            />
                                         </>
                                     )}
                                 </div>

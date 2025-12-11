@@ -1,4 +1,4 @@
-import { UserIdentity } from 'convex/server'
+import type { UserIdentity } from 'convex/server'
 
 export const getUserIdentity = async <T extends { auth: { getUserIdentity: () => Promise<UserIdentity | null> } }>(ctx: T) => {
     const identity = await ctx.auth.getUserIdentity()

@@ -36,19 +36,19 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                 {GOJUON_ORDER.map((row, rowIndex) =>
                     row.map((romanji, colIndex) => {
                         const isEmpty = !romanji
+                        if (isEmpty) {
+                            return <div key={`${rowIndex}-${colIndex}`} className="invisible" />
+                        }
                         const progress = romanji ? progressMap.get(romanji) : undefined
                         const score = progress?.tested ?? 0
                         return (
                             <div
                                 key={`${rowIndex}-${colIndex}`}
                                 className={cn(
-                                    isEmpty && 'invisible',
-                                    !isEmpty &&
-                                        'relative flex flex-col items-center justify-center rounded-lg border border-slate-200 bg-linear-to-br p-3 transition-all duration-200 hover:shadow-md',
-                                    !isEmpty &&
-                                        (writingSystem === 'hiragana'
-                                            ? 'from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100'
-                                            : 'from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100')
+                                    'relative flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-200 bg-linear-to-br p-3 transition-all duration-200 hover:shadow-md',
+                                    writingSystem === 'hiragana'
+                                        ? 'from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100'
+                                        : 'from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100'
                                 )}
                             >
                                 <div className="flex flex-1 items-center justify-center">

@@ -69,7 +69,13 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                                         value={(score / 7) * 100}
                                         className={cn(
                                             'h-1.5',
-                                            score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500'
+                                            score >= 6
+                                                ? '[&>div]:bg-green-600'
+                                                : score >= 3
+                                                  ? '[&>div]:bg-yellow-500'
+                                                  : score > 0
+                                                    ? '[&>div]:bg-red-500'
+                                                    : '[&>div]:bg-slate-200'
                                         )}
                                     />
                                 </Authenticated>
@@ -81,7 +87,7 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
             <Authenticated>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant="outline">Reset Progress</Button>
+                        <Button variant="destructive">Reset Progress</Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>

@@ -1,5 +1,5 @@
 import { useAuth } from '@clerk/clerk-react'
-import { useMutation, useQuery } from 'convex/react'
+import { Authenticated, useMutation, useQuery } from 'convex/react'
 
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -32,7 +32,7 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
 
     return (
         <div className="flex flex-col items-center gap-6">
-            <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}>
+            <div className="grid grid-cols-5 gap-2">
                 {GOJUON_ORDER.map((row, rowIndex) =>
                     row.map((romanji, colIndex) => {
                         const isEmpty = !romanji
@@ -56,19 +56,22 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                                         {charMap.get(romanji)}
                                     </div>
                                 </div>
-                                <Progress
-                                    value={(score / 7) * 100}
-                                    className={cn('h-2', score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500')}
-                                />
+                                <Authenticated>
+                                    <Progress
+                                        value={(score / 7) * 100}
+                                        className={cn('h-2', score >= 6 ? '[&>div]:bg-green-600' : score >= 3 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-red-500')}
+                                    />
+                                </Authenticated>
                             </div>
                         )
                     })
                 )}
             </div>
-
-            <Button variant="destructive" onClick={() => resetProgress({ writingSystem })}>
-                Reset Scores
-            </Button>
+            <Authenticated>
+                <Button variant="destructive" onClick={() => resetProgress({ writingSystem })}>
+                    Reset Scores
+                </Button>
+            </Authenticated>
         </div>
     )
 }

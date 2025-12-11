@@ -59,10 +59,8 @@ export function CharacterChart({ writingSystem }: { writingSystem: WritingSystem
                                     writingSystem === 'hiragana' ? 'from-purple-50 to-pink-50' : 'from-blue-50 to-cyan-50'
                                 )}
                             >
-                                <div className="flex flex-1 items-center justify-center">
-                                    <div className={cn('text-2xl leading-none font-bold', writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900')}>
-                                        {charMap.get(romanji)}
-                                    </div>
+                                <div className={cn('text-2xl leading-none', writingSystem === 'hiragana' ? 'text-purple-900' : 'text-blue-900')}>
+                                    {charMap.get(romanji)}
                                 </div>
                                 <Authenticated>
                                     <Progress

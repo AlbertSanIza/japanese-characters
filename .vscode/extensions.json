@@ -5,11 +5,11 @@
         "chakrounanas.turbo-console-log",
         "dbaeumer.vscode-eslint",
         "eamodio.gitlens",
-        "esbenp.prettier-vscode",
         "github.copilot",
         "github.vscode-github-actions",
         "openai.chatgpt",
         "pkief.material-icon-theme",
+        "prettier.prettier-vscode",
         "streetsidesoftware.code-spell-checker"
     ]
 }

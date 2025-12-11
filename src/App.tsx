@@ -1,5 +1,5 @@
-import { SignInButton, UserButton } from '@clerk/clerk-react'
-import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
+import { SignInButton, useAuth, UserButton } from '@clerk/clerk-react'
+import { Authenticated, AuthLoading, Unauthenticated, useMutation } from 'convex/react'
 import { useMemo, useState } from 'react'
 
 import { CharacterChart } from '@/components/CharacterChart'
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Spinner } from '@/components/ui/spinner'
+import { api } from '@/convex/_generated/api'
 import { WRITING_SYSTEMS_DATA } from '@/data'
 import type { WritingSystem } from '@/lib/types'
 import { cn, shuffleArray } from '@/lib/utils'
@@ -24,6 +25,8 @@ function getOptions(correctRomanji: string, count: number, type: WritingSystem):
 }
 
 export default function App() {
+    const { userId } = useAuth()
+    const answer = useMutation(api.progress.answer)
     const [writingSystem, setWritingSystem] = useState<WritingSystem>('hiragana')
     const [deck, setDeck] = useState(() => shuffleArray(WRITING_SYSTEMS_DATA[writingSystem]))
     const [index, setIndex] = useState(0)
@@ -33,7 +36,11 @@ export default function App() {
     const options = useMemo(() => getOptions(current.romanji, 3, writingSystem), [current.romanji, writingSystem])
     const progress = ((index + 1) / deck.length) * 100
 
-    const handleOptionClick = (isValid: boolean) => {
+    const handleOptionClick = (isSignedIn: boolean, isValid: boolean) => {
+        if (isSignedIn && isAnswerCorrect) {
+            answer({ writingSystem, romanji: current.romanji, isCorrect: isValid })
+        }
+
         setIsAnswerCorrect(isValid)
         if (!isValid) {
             return
@@ -92,8 +99,8 @@ export default function App() {
                             <Button
                                 size="lg"
                                 key={option}
-                                onClick={() => handleOptionClick(option === current.romanji)}
                                 disabled={!isAnswerCorrect && option !== current.romanji}
+                                onClick={() => handleOptionClick(!!userId, option === current.romanji)}
                                 variant={!isAnswerCorrect && option !== current.romanji ? 'destructive' : 'outline'}
                                 className={cn(
                                     'rounded-3xl md:h-26 md:px-10 md:text-6xl',

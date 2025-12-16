@@ -56,17 +56,17 @@ export function CharacterChart({ writingSystem, activeRomanji }: { writingSystem
                                 key={`${rowIndex}-${colIndex}`}
                                 className={cn(
                                     'rounded-md border border-transparent p-2 transition-[color,box-shadow]',
-                                    romanji === activeRomanji && 'border border-input bg-slate-50 shadow-xs'
+                                    romanji === activeRomanji && 'border border-input bg-white shadow-xs'
                                 )}
                             >
                                 <div className="text-b pb-0.5 text-3xl leading-none font-light">{charMap.get(romanji)}</div>
                                 <Progress
-                                    value={(score / 7) * 100}
+                                    value={(score / 4) * 100}
                                     className={cn(
                                         'h-1.5',
-                                        score >= 7
+                                        score >= 4
                                             ? '[&>div]:bg-green-600'
-                                            : score >= 3
+                                            : score >= 2
                                               ? '[&>div]:bg-yellow-500'
                                               : score > 0
                                                 ? '[&>div]:bg-red-500'

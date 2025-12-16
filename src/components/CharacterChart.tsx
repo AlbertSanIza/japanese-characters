@@ -1,5 +1,5 @@
 import { useAuth } from '@clerk/clerk-react'
-import { Authenticated, useMutation, useQuery } from 'convex/react'
+import { useMutation, useQuery } from 'convex/react'
 
 import {
     AlertDialog,
@@ -34,7 +34,7 @@ const GOJUON_ORDER = [
 ]
 
 export function CharacterChart({ writingSystem, activeRomanji }: { writingSystem: WritingSystem; activeRomanji?: string }) {
-    const { userId } = useAuth()
+    const { userId, isSignedIn } = useAuth()
     const resetProgress = useMutation(api.progress.reset)
     const progressData = useQuery(api.progress.getProgress, userId ? { writingSystem } : 'skip')
 
@@ -78,27 +78,25 @@ export function CharacterChart({ writingSystem, activeRomanji }: { writingSystem
                     })
                 )}
             </div>
-            <Authenticated>
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button size="sm" variant="destructive">
-                            Reset Progress
-                        </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                This action cannot be undone. This will permanently reset your progress for the <b>{writingSystem}</b> writing system.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => resetProgress({ writingSystem })}>Reset</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-            </Authenticated>
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button size="sm" variant="destructive" disabled={!isSignedIn || (progressData?.length ?? 0) === 0}>
+                        Reset Progress
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. This will permanently reset your progress for the <b>{writingSystem}</b> writing system.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => resetProgress({ writingSystem })}>Reset</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

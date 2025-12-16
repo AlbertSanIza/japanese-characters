@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Spinner } from '@/components/ui/spinner'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { api } from '@/convex/_generated/api'
 import { WRITING_SYSTEMS_DATA } from '@/data'
 import type { WritingSystem } from '@/lib/types'
@@ -75,9 +76,16 @@ export default function App() {
                     </div>
                 </Authenticated>
                 <Unauthenticated>
-                    <Button asChild>
-                        <SignInButton />
-                    </Button>
+                    <Tooltip defaultOpen={true}>
+                        <TooltipTrigger asChild>
+                            <Button asChild>
+                                <SignInButton />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" align="end">
+                            Sign in to track your progress!
+                        </TooltipContent>
+                    </Tooltip>
                 </Unauthenticated>
             </div>
             <div className="flex w-full flex-1 gap-6">

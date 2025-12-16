@@ -31,7 +31,6 @@ export default function App() {
         if (isSignedIn && isAnswerCorrect) {
             answer({ writingSystem, romanji: current.romanji, isCorrect: isValid })
         }
-
         setIsAnswerCorrect(isValid)
         if (!isValid) {
             return

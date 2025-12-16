@@ -1,5 +1,5 @@
 import { SignInButton, useAuth, UserButton } from '@clerk/clerk-react'
-import { Authenticated, AuthLoading, Unauthenticated, useMutation } from 'convex/react'
+import { Authenticated, AuthLoading, Unauthenticated, useMutation, useQuery } from 'convex/react'
 import { useMemo, useState } from 'react'
 
 import { CharacterChart } from '@/components/CharacterChart'
@@ -16,13 +16,15 @@ export default function App() {
     const { userId } = useAuth()
     const answer = useMutation(api.progress.answer)
     const [writingSystem, setWritingSystem] = useState<WritingSystem>('hiragana')
+    const progressData = useQuery(api.progress.getProgress, userId ? { writingSystem } : 'skip')
     const [deck, setDeck] = useState(() => shuffleArray(WRITING_SYSTEMS_DATA[writingSystem]))
     const [index, setIndex] = useState(0)
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(true)
 
     const current = deck[index]
     const options = useMemo(() => getAnswerOptions(current.romanji, 3, writingSystem), [current.romanji, writingSystem])
-    const progress = ((index + 1) / deck.length) * 100
+    const earnedPoints = progressData?.reduce((sum, characterProgress) => sum + characterProgress.tested, 0) ?? 0
+    const progress = (earnedPoints / WRITING_SYSTEMS_DATA[writingSystem].length) * 4 * 100
 
     const handleOptionClick = (isSignedIn: boolean, isValid: boolean) => {
         if (isSignedIn && isAnswerCorrect) {

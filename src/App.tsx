@@ -78,7 +78,19 @@ export default function App() {
                         <SelectItem value="katakana">Katakana</SelectItem>
                     </SelectContent>
                 </Select>
-                <Progress className="flex-1 [&>div]:bg-[#BE0028]" value={progress} />
+                <Progress
+                    value={progress}
+                    className={cn(
+                        'flex-1',
+                        progress >= 100
+                            ? '[&>div]:bg-green-600'
+                            : progress >= 50
+                              ? '[&>div]:bg-yellow-500'
+                              : progress > 0
+                                ? '[&>div]:bg-red-500'
+                                : '[&>div]:bg-slate-200'
+                    )}
+                />
                 <AuthLoading>
                     <div className="flex size-7 items-center justify-center rounded-full bg-stone-200">
                         <Spinner />

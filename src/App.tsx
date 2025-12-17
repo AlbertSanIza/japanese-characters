@@ -16,7 +16,7 @@ import { cn, getAnswerOptions, shuffleArray } from '@/lib/utils'
 export default function App() {
     const { userId } = useAuth()
     const answer = useMutation(api.progress.answer)
-    const [box, setBox] = useState({ width: 0, height: 0, size: 0 })
+    const [box, setBox] = useState({ size: 0, isWide: false })
     const [writingSystem, setWritingSystem] = useState<WritingSystem>('hiragana')
     const progressData = useQuery(api.progress.getProgress, userId ? { writingSystem } : 'skip')
     const [deck, setDeck] = useState(() => shuffleArray(WRITING_SYSTEMS_DATA[writingSystem]))
@@ -35,7 +35,7 @@ export default function App() {
         }
         const resizeObserver = new ResizeObserver(() => {
             const { width, height } = container.getBoundingClientRect()
-            setBox({ width, height, size: Math.min(width, height) })
+            setBox({ size: Math.min(width, height), isWide: width > height })
         })
         resizeObserver.observe(container)
         return () => resizeObserver.disconnect()
@@ -106,10 +106,9 @@ export default function App() {
                 <div className="flex flex-1 flex-col items-center justify-center">
                     <div id="box-container" className="flex w-full flex-1 items-center justify-center">
                         <div
-                            className="flex max-h-full max-w-full items-center justify-center"
+                            className="flex size-full max-h-full max-w-full items-center justify-center"
                             style={{
-                                width: box.width > box.height ? `${box.size}px` : `100%`,
-                                height: box.width > box.height ? `100%` : `${box.size}px`,
+                                [box.isWide ? 'width' : 'height']: `${box.size}px`,
                                 fontSize: `${box.size * 0.6}px`
                             }}
                         >

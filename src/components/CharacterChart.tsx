@@ -42,7 +42,7 @@ export function CharacterChart({ writingSystem, activeRomanji }: { writingSystem
     const charMap = new Map(WRITING_SYSTEMS_DATA[writingSystem].map((item) => [item.romanji, item.character]))
 
     return (
-        <div className="flex flex-col items-center gap-4">
+        <div className="hidden min-w-59.5 flex-col items-center gap-4 md:flex">
             <div className="grid grid-cols-5 gap-0.5">
                 {GOJUON_ORDER.map((row, rowIndex) =>
                     row.map((romanji, colIndex) => {

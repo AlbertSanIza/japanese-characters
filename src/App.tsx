@@ -115,7 +115,7 @@ export default function App() {
                             {current.character}
                         </div>
                     </div>
-                    <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">
+                    <div className="grid w-full grid-cols-2 gap-4 md:w-fit md:grid-cols-4 md:gap-6">
                         {options.map((option) => (
                             <Button
                                 size="lg"
@@ -124,7 +124,7 @@ export default function App() {
                                 onClick={() => handleOptionClick(!!userId, option === current.romanji)}
                                 variant={!isAnswerCorrect && option !== current.romanji ? 'destructive' : 'outline'}
                                 className={cn(
-                                    'rounded-3xl border md:h-26 md:px-10 md:text-6xl',
+                                    'h-16 rounded-3xl border text-3xl font-bold md:h-26 md:px-10 md:text-6xl md:font-normal',
                                     !isAnswerCorrect && option !== current.romanji && 'opacity-10!',
                                     !isAnswerCorrect && option === current.romanji && 'border-green-600 bg-green-100 hover:bg-green-50'
                                 )}

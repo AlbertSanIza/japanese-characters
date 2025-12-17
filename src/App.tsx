@@ -1,6 +1,6 @@
 import { SignInButton, useAuth, UserButton } from '@clerk/clerk-react'
 import { Authenticated, AuthLoading, Unauthenticated, useMutation, useQuery } from 'convex/react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { CharacterChart } from '@/components/CharacterChart'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,7 @@ import { cn, getAnswerOptions, shuffleArray } from '@/lib/utils'
 export default function App() {
     const { userId } = useAuth()
     const answer = useMutation(api.progress.answer)
+    const [box, setBox] = useState({ width: 0, height: 0, size: 0 })
     const [writingSystem, setWritingSystem] = useState<WritingSystem>('hiragana')
     const progressData = useQuery(api.progress.getProgress, userId ? { writingSystem } : 'skip')
     const [deck, setDeck] = useState(() => shuffleArray(WRITING_SYSTEMS_DATA[writingSystem]))
@@ -26,6 +27,19 @@ export default function App() {
     const options = useMemo(() => getAnswerOptions(current.romanji, 3, writingSystem), [current.romanji, writingSystem])
     const earnedPoints = progressData?.reduce((sum, characterProgress) => sum + characterProgress.tested, 0) ?? 0
     const progress = (earnedPoints / WRITING_SYSTEMS_DATA[writingSystem].length) * 4 * 100
+
+    useEffect(() => {
+        const container = document.getElementById('box-container')
+        if (!container) {
+            return
+        }
+        const resizeObserver = new ResizeObserver(() => {
+            const { width, height } = container.getBoundingClientRect()
+            setBox({ width, height, size: Math.min(width, height) })
+        })
+        resizeObserver.observe(container)
+        return () => resizeObserver.disconnect()
+    }, [])
 
     const handleOptionClick = (isSignedIn: boolean, isValid: boolean) => {
         if (isSignedIn && isAnswerCorrect) {
@@ -90,7 +104,18 @@ export default function App() {
             <div className="flex w-full flex-1 gap-6">
                 <CharacterChart writingSystem={writingSystem} activeRomanji={current.romanji} />
                 <div className="flex flex-1 flex-col items-center justify-center">
-                    <div className="flex flex-1 items-center text-[56vh] leading-[56vh]">{current.character}</div>
+                    <div id="box-container" className="flex w-full flex-1 items-center justify-center">
+                        <div
+                            className="flex max-h-full max-w-full items-center justify-center"
+                            style={{
+                                width: box.width > box.height ? `${box.size}px` : `100%`,
+                                height: box.width > box.height ? `100%` : `${box.size}px`,
+                                fontSize: `${box.size * 0.6}px`
+                            }}
+                        >
+                            {current.character}
+                        </div>
+                    </div>
                     <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:gap-6">
                         {options.map((option) => (
                             <Button

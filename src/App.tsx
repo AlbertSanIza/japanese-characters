@@ -26,7 +26,8 @@ export default function App() {
     const current = deck[index]
     const options = useMemo(() => getAnswerOptions(current.romanji, 3, writingSystem), [current.romanji, writingSystem])
     const earnedPoints = progressData?.reduce((sum, characterProgress) => sum + characterProgress.tested, 0) ?? 0
-    const progress = (earnedPoints / WRITING_SYSTEMS_DATA[writingSystem].length) * 4 * 100
+    const totalPoints = WRITING_SYSTEMS_DATA[writingSystem].length * 4
+    const progress = Math.min(100, Math.max(0, (earnedPoints / totalPoints) * 100))
 
     useEffect(() => {
         const container = document.getElementById('box-container')

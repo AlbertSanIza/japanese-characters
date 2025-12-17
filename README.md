@@ -2,7 +2,7 @@
 
 # [Japanese Characters](https://albertsaniza.github.io/japanese-characters)
 
-![Japanese Characters](https://github.com/user-attachments/assets/0b8bf106-c57a-439e-bd30-57cad9497318)
+![Japanese Characters](https://github.com/user-attachments/assets/31ad5315-c2e4-4078-8124-163d00f6900e)
 
 An interactive web application for learning and practicing Japanese Hiragana and Katakana characters. Test your knowledge through a quiz-style interface with multiple-choice options.
 

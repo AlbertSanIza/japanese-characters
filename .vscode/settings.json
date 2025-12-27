@@ -30,6 +30,7 @@
     "search.exclude": {
         "**/bun.lock": true
     },
-    "tailwindCSS.classFunctions": ["clsx", "cn", "cva", "twMerge", "tw", "clsx", "tw\\.[a-z-]+"],
+    "tailwindCSS.classFunctions": ["clsx", "cn", "cva", "tw", "tw\\.[a-z-]+"],
+    "workbench.colorTheme": "Default Dark+",
     "workbench.iconTheme": "material-icon-theme"
 }

@@ -4,7 +4,7 @@
     "semi": false,
     "singleQuote": true,
     "tabWidth": 4,
-    "tailwindFunctions": ["clsx", "cn", "cva", "twMerge"],
+    "tailwindFunctions": ["clsx", "cn", "cva", "tw", "tw\\.[a-z-]+"],
     "tailwindStylesheet": "./src/index.css",
     "trailingComma": "none"
 }

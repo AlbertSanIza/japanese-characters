@@ -15,6 +15,7 @@ jobs:
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
+        name: Install, Format, Lint, Build, Test and Deploy
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -23,6 +24,8 @@ jobs:
               uses: oven-sh/setup-bun@v2
             - name: Install dependencies
               run: bun install
+            - name: Prettier Check
+              run: bun run prettier
             - name: Convex Deploy
               run: bunx convex deploy --cmd 'bun run build'
               env:

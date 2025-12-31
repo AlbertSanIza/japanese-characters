@@ -15,7 +15,7 @@ jobs:
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
-        name: Install, Format, Lint, Build, Test and Deploy
+        name: Install, Prettier, ESLint, Build and Deploy
         runs-on: ubuntu-latest
         steps:
             - name: Checkout

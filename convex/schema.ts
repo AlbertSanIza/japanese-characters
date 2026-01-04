@@ -11,5 +11,28 @@ export default defineSchema({
         tested: v.number()
     })
         .index('by_userId_writingSystem', ['userId', 'writingSystem'])
-        .index('by_userId_writingSystem_romanji', ['userId', 'writingSystem', 'romanji'])
+        .index('by_userId_writingSystem_romanji', ['userId', 'writingSystem', 'romanji']),
+    
+    speedChallenges: defineTable({
+        userId: v.string(),
+        writingSystem: WRITING_SYSTEM,
+        score: v.number(),
+        time: v.number(),
+        accuracy: v.number(),
+        maxCombo: v.number(),
+        date: v.number()
+    })
+        .index('by_userId_writingSystem', ['userId', 'writingSystem'])
+        .index('by_writingSystem_score', ['writingSystem', 'score']),
+    
+    memoryGameScores: defineTable({
+        userId: v.string(),
+        writingSystem: WRITING_SYSTEM,
+        gridSize: v.union(v.literal('small'), v.literal('medium'), v.literal('large')),
+        time: v.number(),
+        moves: v.number(),
+        date: v.number()
+    })
+        .index('by_userId_writingSystem', ['userId', 'writingSystem'])
+        .index('by_writingSystem_gridSize_time', ['writingSystem', 'gridSize', 'time'])
 })
